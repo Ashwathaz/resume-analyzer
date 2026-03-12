@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: resume_analyzer_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: resume_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  web:
+    build: .
+    container_name: resume_analyzer_app
+    ports:
+      - "8501:8501"
+    environment:
+      - DATABASE_URL=postgresql://admin:password@db:5432/resume_db
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  postgres_data:

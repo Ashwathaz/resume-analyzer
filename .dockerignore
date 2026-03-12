@@ -1,0 +1,13 @@
+.venv
+venv
+__pycache__
+*.pyc
+.pytest_cache
+.DS_Store
+.git
+.gitignore
+README.md
+Dockerfile
+docker-compose.yml
+.env
+# We intentionally do not ignore .env as requested.
