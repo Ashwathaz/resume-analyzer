@@ -1,5 +1,5 @@
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Neuton:wght@200;300;400;700;800&family=Varela+Round&family=Zen+Dots&display=swap');
 
 /* Root Variables */
 :root {
@@ -19,11 +19,12 @@
 
 /* Global Styles */
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Neuton', serif !important;
     background-color: var(--bg-darker);
     color: var(--text-primary);
     line-height: 1.6;
 }
+
 
 .stApp {
     background: 
@@ -1665,4 +1666,65 @@ h1 {
 
 .feedback-container::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #45a049, #1e88e5);
+}
+
+/* Override all Streamlit text components to be white since the base theme defaults to light */
+[data-testid="stMarkdownContainer"], 
+[data-testid="stMarkdownContainer"] p, 
+[data-testid="stMarkdownContainer"] li, 
+[data-testid="stMarkdownContainer"] span, 
+[data-testid="stMarkdownContainer"] h1, 
+[data-testid="stMarkdownContainer"] h2, 
+[data-testid="stMarkdownContainer"] h3, 
+[data-testid="stMarkdownContainer"] h4, 
+[data-testid="stMarkdownContainer"] h5, 
+[data-testid="stMarkdownContainer"] h6,
+[data-testid="stText"],
+[data-testid="stCaptionContainer"] {
+    color: #FFFFFF !important;
+}
+
+[data-baseweb="checkbox"] div,
+[data-baseweb="radio"] div {
+    color: #FFFFFF !important;
+}
+
+/* Force button text to black to ensure visibility against their light background */
+button[data-baseweb="button"],
+button[data-baseweb="button"] p,
+button[data-baseweb="button"] span,
+button[data-baseweb="button"] div,
+[data-testid="stDownloadButton"] button,
+[data-testid="stDownloadButton"] button p,
+[data-testid="stDownloadButton"] button span,
+[data-testid="stButton"] button,
+[data-testid="stButton"] button p,
+[data-testid="stButton"] button span,
+[data-testid="baseButton-secondary"],
+[data-testid="baseButton-secondary"] p,
+[data-testid="baseButton-secondary"] span,
+[data-testid="baseButton-primary"],
+[data-testid="baseButton-primary"] p,
+[data-testid="baseButton-primary"] span {
+    color: #000000 !important;
+}
+
+/* Typography Overrides (Restricted to avoid overriding icon fonts) */
+[data-testid="stMarkdownContainer"] p, [data-testid="stMarkdownContainer"] li, p, li, a, td, th {
+    font-family: 'Neuton', serif !important;
+}
+
+h1, h2, h3, h4, h5, h6, 
+[data-testid="stMarkdownContainer"] h1, 
+[data-testid="stMarkdownContainer"] h2, 
+[data-testid="stMarkdownContainer"] h3, 
+[data-testid="stMarkdownContainer"] h4, 
+[data-testid="stMarkdownContainer"] h5, 
+[data-testid="stMarkdownContainer"] h6 {
+    font-family: 'Varela Round', sans-serif !important;
+}
+
+/* Ensure nav links have Zen Dots */
+.nav-link, button.nav-link, .menu-title {
+    font-family: 'Zen Dots', cursive !important;
 }

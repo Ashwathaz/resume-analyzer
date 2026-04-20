@@ -1706,6 +1706,46 @@ class ResumeApp:
 
                         st.markdown("</div>", unsafe_allow_html=True)
 
+                    # Create PDF for standard analysis
+                    try:
+                        pdf_analysis_payload = {
+                            "score": analysis.get('ats_score', 0),
+                            "ats_score": analysis.get('ats_score', 0),
+                            "model_used": "Standard ATS Rules Engine",
+                            "strengths": [
+                                f"Format Score: {analysis.get('format_score', 0)}%",
+                                f"Section Score: {analysis.get('section_score', 0)}%",
+                                f"Keyword Match Score: {int(analysis.get('keyword_match', {}).get('score', 0))}%"
+                            ],
+                            "weaknesses": analysis.get('keyword_match', {}).get('missing_skills', []),
+                            "suggestions": analysis.get('suggestions', []),
+                            "full_response": f"## Overall Assessment\nStandard ATS Analysis Complete for {selected_role}.\nThe resume achieves an ATS compatibility score of {analysis.get('ats_score', 0)}%.\n\n## Skills Analysis\nMissing Skills: {', '.join(analysis.get('keyword_match', {}).get('missing_skills', []))}"
+                        }
+                        
+                        pdf_buffer = self.ai_analyzer.generate_pdf_report(
+                            analysis_result=pdf_analysis_payload,
+                            candidate_name=analysis.get('name', 'Candidate'),
+                            job_role=selected_role
+                        )
+                        
+                        if pdf_buffer:
+                            import datetime as dt
+                            st.markdown("<br>", unsafe_allow_html=True)
+                            
+                            _, center_col, _ = st.columns([1, 2, 1])
+                            with center_col:
+                                st.download_button(
+                                    label="📊 Download PDF Report",
+                                    data=pdf_buffer,
+                                    file_name=f"resume_analysis_{dt.datetime.now().strftime('%Y%m%d_%H%M')}.pdf",
+                                    mime="application/pdf",
+                                    use_container_width=True,
+                                    on_click=lambda: st.balloons(),
+                                    key="download_standard_pdf"
+                                )
+                    except Exception as pdf_err:
+                        st.error(f"Failed to generate PDF: {str(pdf_err)}")
+
                         # Course Recommendations
                     st.markdown("""
                         <div class="feature-card">
@@ -2870,10 +2910,11 @@ class ResumeApp:
 
                                     # PDF download button
                                     if pdf_buffer:
+                                        import datetime as dt
                                         st.download_button(
                                             label="📊 Download PDF Report",
                                             data=pdf_buffer,
-                                            file_name=f"resume_analysis_{datetime.now().strftime('%Y%m%d_%H%M')}.pdf",
+                                            file_name=f"resume_analysis_{dt.datetime.now().strftime('%Y%m%d_%H%M')}.pdf",
                                             mime="application/pdf",
                                             use_container_width=True,
                                             on_click=lambda: st.balloons()
@@ -3017,7 +3058,8 @@ class ResumeApp:
                     "padding": "15px 0px",
                     "width": "100%",
                     "border-radius": "0px",
-                    "flex-grow": "1"
+                    "flex-grow": "1",
+                    "font-family": "'Zen Dots', cursive"
                 },
                 "nav-link-selected": {
                     "background-color": "#4CAF50",
